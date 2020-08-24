@@ -1,13 +1,13 @@
 <div id="menu">
 <div id="menu-kiri">
 <ul>
-<a href="{{ url('/') }}" title="Beranda - Grosir Sandal Online"><li><img src="http://arkadiaapps.loc/asset/images/icon-home.png" class="menu-img" border="0" />Beranda</li></a>
+<a href="{{ url('/') }}" title="Beranda - Grosir Sandal Online"><li><img src="{{ url('images/icon-home.png') }}" class="menu-img" border="0" />Beranda</li></a>
 
-<a href="{{ url('about') }}" title="Profil Kami "><li><img src="http://arkadiaapps.loc/asset/images/icon-about.png" class="menu-img" border="0" />Tentang Kami</li></a>
+<a href="{{ url('about') }}" title="Profil Kami "><li><img src="{{ url('images/icon-about.png') }}" class="menu-img" border="0" />Tentang Kami</li></a>
 
-<a href="{{ url('info') }}" title="Cara Belanja | Grosir Sandal Online"><li><img src="http://arkadiaapps.loc/asset/images/icon-how-to.png" class="menu-img" border="0" />Cara Belanja</li></a>
+<a href="{{ url('info') }}" title="Cara Belanja | Grosir Sandal Online"><li><img src="{{ url('images/icon-how-to.png') }}" class="menu-img" border="0" />Cara Belanja</li></a>
 
-<a href="{{ url('contact') }}" title="Hubungi Kami | Grosir Sandal Online"><li><img src="http://arkadiaapps.loc/asset/images/icon-contact.png" class="menu-img" border="0" />Hubungi Kami</li></a>
+<a href="{{ url('contact') }}" title="Hubungi Kami | Grosir Sandal Online"><li><img src="{{ url('images/icon-contact.png') }}" class="menu-img" border="0" />Hubungi Kami</li></a>
 
 
 </ul>

@@ -17,7 +17,7 @@
             <td>{!! DB::table('products')->where('id',$report->product_id)->first()->name !!}</td>
             <td>{!! $report->qty !!}</td>
             <td>{!! $report->price !!}</td>
-            <td>@if($report->status ==0) Proses Pesanan @else Terjual @endif</td>
+            <td>@if($report->status ==0) Proses Pesanan @elseif($report->status ==1) Terjual @else Retur  @endif</td>
             <td>{!! $report->description !!}</td>
             <td>
                 {!! Form::open(['route' => ['reports.destroy', $report->id], 'method' => 'delete']) !!}

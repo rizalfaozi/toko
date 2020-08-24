@@ -32,6 +32,8 @@
     {!! Form::file('photo', null, ['class' => 'form-control']) !!}
 </div>
 
+<?php if(Request::segment(2) !="create"){  ;?>
+
 <br>
 @if(isset($admins) ? $admins->photo != "" : true )
 <div class="form-group col-sm-12">
@@ -45,7 +47,15 @@
      {{ Form::radio('status', 1, isset($admins) ? $admins->status == 1 : true) }} Aktif<br>
     {{ Form::radio('status', 0, isset($admins) ? $admins->status == 0 : false) }} Tidak Aktif
 </div>
+<?php }else{ ?>
 
+<div class="form-group col-sm-6">
+    {!! Form::label('status', '* Status:') !!}<br>
+     {{ Form::radio('status', 1 ) }} Aktif<br>
+    {{ Form::radio('status', 0 )}} Tidak Aktif
+</div>
+
+<?php } ?>
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
     {!! Form::submit('Simpan', ['class' => 'btn btn-primary']) !!}
