@@ -36,6 +36,7 @@ class Product extends Model
         'price',
         'description',
         'noted',
+        'stok',
         'theme',
         'color',
         'photo'
@@ -53,6 +54,7 @@ class Product extends Model
         'sub_brand_id'=> 'integer',
         'price' => 'string',
         'noted' => 'string',
+        'stok'=>'integer',
         'description' => 'string',
         'theme' => 'string',
         'color' => 'string',
@@ -70,6 +72,7 @@ class Product extends Model
         'sub_brand_id' => 'required',
         'price' => 'required',
         'theme' => 'required',
+        'stok' => 'required',
         'color' => 'required'
     ];
 

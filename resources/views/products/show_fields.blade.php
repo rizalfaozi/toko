@@ -18,6 +18,13 @@
     <p>{!! $product->price !!}</p>
 </div>
 
+<!-- Price Field -->
+<div class="form-group">
+    {!! Form::label('stok', 'Stok:') !!}
+    <p>{!! $product->stok !!}</p>
+</div>
+
+
 <!-- Description Field -->
 <div class="form-group">
     {!! Form::label('description', 'Deskripsi:') !!}

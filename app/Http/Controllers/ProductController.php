@@ -122,7 +122,13 @@ class ProductController extends AppBaseController
             $input['price'] = $request->price;
          } 
 
-         
+         if($request->stok == "")
+         {
+            Flash::error('Stok masih kosong');
+            return redirect(route('product.create'));
+         }else{
+            $input['stok'] = $request->stok;
+         } 
 
          $input['noted'] = $request->noted;
          $input['description'] = $request->description;

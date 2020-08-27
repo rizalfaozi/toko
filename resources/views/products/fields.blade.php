@@ -63,6 +63,12 @@
     {!! Form::text('price', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Motif Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('stok', 'Stok:') !!}
+    {!! Form::integer('stok', null, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Description Field -->
 <div class="form-group col-sm-12 col-lg-12">
     {!! Form::label('description', 'Deskripsi:') !!}

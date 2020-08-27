@@ -5,6 +5,7 @@
             <th>Nama</th>
         <th>Brand</th>
         <th>Harga</th>
+        <th>Stok</th>
         <th>Deskripsi</th>
         <th>Motif</th>
         <th>Warna</th>
@@ -20,6 +21,7 @@
             <td>{!! $produk->name !!}</td>
             <td>{!! $produk->brand->name !!}</td>
             <td>@if($produk->price ==0) - @else  {!!  "Rp " . number_format($produk->price,2,',','.');  !!}@endif</td>
+            <td>{!! $produk->stok !!}</td>
             <td>@if($produk->description =="")- @else {!!  substr($produk->description, 0, 80) !!} ...@endif</td>
             <td>@if($produk->theme =="")  - @else {!! $produk->theme !!}@endif</td>
             <td>@if($produk->color =="") - @else{!! $produk->color !!}@endif</td>
