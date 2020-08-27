@@ -5,7 +5,7 @@
 </div>
 
 
-@if(Request::segment(2) == "edit")
+@if(Request::segment(3) == "edit")
 
 <!-- Brand Id Field -->
 <div class="form-group col-sm-6">
@@ -93,7 +93,7 @@
     {!! Form::file('photo', null, ['class' => 'form-control']) !!}
 </div>
 
-@if(Request::segment(2) == "edit")
+@if(Request::segment(3) == "edit")
 
 @if(isset($product) ? $product->photo != "" : true )
 <div class="form-group col-sm-12">
@@ -105,7 +105,7 @@
 @endif
 
 
-@if(Request::segment(2) == "edit")
+@if(Request::segment(3) == "edit")
 <!-- Status Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('status', '* Status:') !!}<br>
