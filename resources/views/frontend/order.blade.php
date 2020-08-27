@@ -53,6 +53,12 @@
 </tr>
 
 <tr>
+	<td width="100">Total</td>
+	<td>:</td>
+	<td><div id="total"></div></td>
+</tr>
+
+<tr>
 	<td width="100">No. Telpon</td>
 	<td>:</td>
 	<td><input name="phone" type="text" class="input-teks" id="phone" size="50"></td>
@@ -87,3 +93,16 @@
 </tbody></table>
 </form>
 </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $("#qty").keyup(function(){
+    let qty =  $('#qty').val();
+    let price =  $('#price').val();
+       let total = price*qty;
+      $('#total').html('<input type="text" disabled="disabled" class="input-teks" size="50" value="'+ total +'"> ');
+  });
+});
+</script>
