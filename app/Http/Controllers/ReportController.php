@@ -154,11 +154,33 @@ class ReportController extends AppBaseController
             return redirect(route('reports.index'));
         }
 
-        $report = $this->reportRepository->update($request->all(), $id);
+        $product = DB::table('products')->where('id',$report->product_id)->first();
+        $stok = $product->stok;
+   
+       if($request->status ==1)
+       {
+            $jml = (int) $stok - (int) 1;
+            DB::table('products')->where('id',$report->product_id)->update(['stok'=>$jml]);
+       }else if($request->status ==2){
+          $jml = (int) $stok + (int)1;
+          DB::table('products')->where('id',$report->product_id)->update(['stok'=>$jml]);
+       }
+         if($stok != 0)
+         {
+
+          
+           $report = DB::table('reports')->update(['product_id'=>$request->product_id,'qty'=>$request->qty,'price'=>$request->price,'description'=>$request->description,'status'=>$request->status]);
+        //$report = $this->reportRepository->update($request->all(), $id);
 
         Flash::success('Report updated successfully.');
 
         return redirect(route('reports.index'));
+
+         }else{
+
+              Flash::error('Stok produk kosong');
+            return redirect(route('reports.index'));
+         }
     }
 
     /**

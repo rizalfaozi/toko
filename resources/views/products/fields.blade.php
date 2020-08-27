@@ -66,7 +66,7 @@
 <!-- Motif Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('stok', 'Stok:') !!}
-    {!! Form::integer('stok', null, ['class' => 'form-control']) !!}
+    {!! Form::number('stok', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Description Field -->
