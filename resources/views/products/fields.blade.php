@@ -117,8 +117,8 @@
 
 <div class="form-group col-sm-6">
     {!! Form::label('status', '* Status:') !!}<br>
-    <input type="radio" name="status" value="1"> Publish<br>
-    <input type="radio" name="status" value="0"> Unpublish<br>
+    <input type="radio" name="status" id="status" value="1"> Publish<br>
+    <input type="radio" name="status" id="status" value="0"> Unpublish
 </div>
 
 @endif

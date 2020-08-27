@@ -1,8 +1,8 @@
 <!-- Kode Pesanan Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('kode_pesanan', 'Kode Pesanan:') !!}
-    {!! Form::text('kode_pesanan', $order_id, ['class' => 'form-control','disabled'=>'disabled']) !!}
-    <input type="hidden" name="order_id" value="{{ $order_id }}">
+    {!! Form::text('kode_pesanan', $report->id, ['class' => 'form-control','disabled'=>'disabled']) !!}
+    <input type="hidden" name="order_id" value="{{ $report->id }}">
 </div>
 
 <!-- Produk Id Field -->
@@ -45,8 +45,8 @@
 <!-- Status Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('status', 'Status:') !!}<br>
-     {{ Form::radio('status', 0, isset($admins) ? $admins->status == 0 : true) }} Proses Pesanan<br>
-    {{ Form::radio('status', 1, isset($admins) ? $admins->status == 1 : false) }} Terjual
+     {{ Form::radio('status', 0, isset($admins) ? $admins->status == 0 : true) }} Proses<br>
+    {{ Form::radio('status', 1, isset($admins) ? $admins->status == 1 : false) }} Terjual<br>
     {{ Form::radio('status', 2, isset($admins) ? $admins->status == 2 : false) }} Retur
 </div>
 
