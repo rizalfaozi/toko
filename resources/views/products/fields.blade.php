@@ -4,6 +4,9 @@
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
 </div>
 
+
+@if(Request::segment(2) == "edit")
+
 <!-- Brand Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('brand_id', 'Brand:') !!}
@@ -23,6 +26,25 @@
     </select>
 </div>
 
+@else
+
+<div class="form-group col-sm-6">
+    {!! Form::label('brand_id', 'Brand:') !!}
+    <select class="form-control" id="brand_id" name="brand_id">
+        <option value="0">Pilih Brand</option>
+
+         @foreach($brands as $row)
+         
+             <option value="{{ $row->id }}">{{ $row->name }}</option>
+
+          
+         @endforeach
+       
+    
+    </select>
+</div>
+
+@endif
 
 <!-- Brand Id Field -->
 <div class="form-group col-sm-6">
@@ -65,6 +87,7 @@
     {!! Form::file('photo', null, ['class' => 'form-control']) !!}
 </div>
 
+@if(Request::segment(2) == "edit")
 
 @if(isset($product) ? $product->photo != "" : true )
 <div class="form-group col-sm-12">
@@ -72,6 +95,11 @@
 </div>
 @endif
 
+
+@endif
+
+
+@if(Request::segment(2) == "edit")
 <!-- Status Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('status', '* Status:') !!}<br>
@@ -79,7 +107,15 @@
     {{ Form::radio('status', 0, isset($products) ? $products->status == 0 : false) }} Unpublish
 </div>
 
+@else
 
+<div class="form-group col-sm-6">
+    {!! Form::label('status', '* Status:') !!}<br>
+    <input type="radio" name="status" value="1"> Publish<br>
+    <input type="radio" name="status" value="0"> Unpublish<br>
+</div>
+
+@endif
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
     {!! Form::submit('Simpan', ['class' => 'btn btn-primary']) !!}
@@ -132,10 +168,11 @@ if(action !="edit")
          let jml = respons.length;
             $('#sub_brand_id').prop("disabled", false);
           selected  += '<option value="0">Pilih Sub Brand</option>';
-         for(i=0; i<jml; i++)
-         {
+          for(let a = 0; a < jml; a++)
+          {
+      
             
-            selected  += '<option value="'+ respons[i]['id'] +'">'+ respons[i]['name'] +'</option';
+            selected  += '<option value="'+ respons[a]['id'] +'">'+ respons[a]['name'] +'</option>';
          }   
 
          $('#sub_brand_id').html(selected);
