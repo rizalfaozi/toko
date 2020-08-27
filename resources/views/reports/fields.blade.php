@@ -12,7 +12,7 @@
         <option value="0">Pilih Produk</option>
        @if(!empty($product))
         @foreach($product as $row)
-           @if($reports_id == $row->id)
+           @if($report->product_id == $row->id)
              <option value="{{ $row->id }}" selected>{{ $row->name }}</option>
            @else
              <option value="{{ $row->id }}">{{ $row->name }}</option>
