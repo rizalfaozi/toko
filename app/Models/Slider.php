@@ -26,6 +26,7 @@ class Slider extends Model
 
     public $fillable = [
         'name',
+        'product_id',
         'description',
         'foto',
         'foto_crop',
@@ -40,6 +41,7 @@ class Slider extends Model
      */
     protected $casts = [
         'name' => 'string',
+        'product_id'=> 'integer',
         'description' => 'text',
         'foto'=>'string',
         'foto_crop'=>'string',
@@ -54,6 +56,7 @@ class Slider extends Model
      */
     public static $rules = [
         'name' => 'required',
+        'product_id' => 'required',
         'status' =>'required'
     ];
 

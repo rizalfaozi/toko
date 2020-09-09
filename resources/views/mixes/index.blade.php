@@ -71,7 +71,7 @@
       </div>
  </section>  
     <section class="content-header">
-        <h1 class="pull-left">Mixes</h1>
+        <h1 class="pull-left">Bahan Cetakan</h1>
         <h1 class="pull-right">
            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('mixes.create') !!}">Tambah</a>
         </h1>

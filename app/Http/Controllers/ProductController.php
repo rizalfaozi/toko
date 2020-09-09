@@ -51,15 +51,11 @@ class ProductController extends AppBaseController
     public function create()
     {
         $brands = DB::table('brands')->where('setting','utama')->get();
-        return view('products.create')->with(['brands'=>$brands]);
+        $stock_order = DB::table('stock_orders')->where('status',1)->get();
+        return view('products.create')->with(['brands'=>$brands,'stock_order'=>$stock_order]);
     }
 
-     public function subkategori($id)
-    {
-       
-        $subbrands = DB::table('brands')->where(['menu_id'=>$id])->get();
-        return $subbrands;
-    }
+   
 
 
      public function subkategoriselect($produkid,$id)
@@ -71,19 +67,52 @@ class ProductController extends AppBaseController
         return $data;
     }
 
-    public function publish($id)
-    {
-       $product = DB::table('products')->where(['id'=>$id])->update(['status'=>1]);
-        Flash::success('Publish Produk Berhasil.');
-        return redirect(route('product.index'));
-    } 
+    public function status($type,$id){
+        
+       
+       if($type =='publish')
+       {
+           
+        DB::table('products')->where(['id'=>$id])->update(['status'=>1]);
+        Flash::success('Berhasil produk siap di publish');
 
-    public function unpublish($id)
+       }else{
+         DB::table('products')->where(['id'=>$id])->update(['status'=>0]);  
+        Flash::success('Produk berhasil di unpublish'); 
+       } 
+        
+       return redirect(route('product.index'));
+    }
+
+ 
+
+     public function brands($id)
     {
-       $product = DB::table('products')->where(['id'=>$id])->update(['status'=>0]);
-        Flash::success('Unpublish Produk Berhasil.');
-        return redirect(route('product.index'));
-    }    
+       
+        $stock = DB::table('stock_orders')->where(['id'=>$id])->first();
+        $brands = DB::table('brands')->select('id','name')->where(['id'=>$stock->brand_id])->first();  
+        return json_encode($brands);
+    }
+
+    
+
+
+      public function subkategori($id)
+    {
+        
+        $stock = DB::table('stock_orders')->where(['id'=>$id])->first();
+        $brands = DB::table('brands')->select('id','name')->where(['id'=>$stock->sub_brand_id])->first(); 
+        return json_encode($brands);
+    }
+
+
+
+     public function stock($id)
+    {
+       
+        $stock = DB::table('stock_orders')->where(['sub_brand_id'=>$id])->first()->stock;
+        return $stock;
+    }
 
     /**
      * Store a newly created Product in storage.
@@ -94,14 +123,15 @@ class ProductController extends AppBaseController
      */
     public function store(CreateProductRequest $request)
     {
-         
+       
 
-         if($request->name ==""){
+         if($request->product_id ==""){
             Flash::error('Nama produk masih kosong');
             return redirect(route('product.create'));
          }else{
-           $input['name'] = $request->name; 
-           $input['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->name))); 
+           $input['product_id'] = $request->product_id;
+           $product = DB::table('stock_orders')->where('id',$request->product_id)->first();
+           $input['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $product->name))); 
          } 
 
           if($request->brand_id == "")
@@ -122,19 +152,19 @@ class ProductController extends AppBaseController
             $input['price'] = $request->price;
          } 
 
-         if($request->stok == "")
+         if($request->status == "")
          {
-            Flash::error('Stok masih kosong');
+            Flash::error('Status belum dipilih');
             return redirect(route('product.create'));
          }else{
-            $input['stok'] = $request->stok;
+            $input['status'] = $request->status;
          } 
 
          $input['noted'] = $request->noted;
          $input['description'] = $request->description;
          $input['theme'] = $request->theme;
          $input['color'] = $request->color;
-         $input['status'] = $request->status; 
+         
          if($request->photo=='') 
             {
                         
@@ -195,13 +225,14 @@ class ProductController extends AppBaseController
     {
         $product = $this->productRepository->findWithoutFail($id);
         $brands = DB::table('brands')->where('setting','utama')->get();
+        $stock_order = DB::table('stock_orders')->where('status',1)->get();
         if (empty($product)) {
             Flash::error('Product not found');
 
             return redirect(route('product.index'));
         }
 
-        return view('products.edit')->with(['product'=> $product,'brands'=>$brands]);
+        return view('products.edit')->with(['product'=> $product,'brands'=>$brands,'stock_order'=>$stock_order]);
     }
 
     /**
@@ -256,18 +287,19 @@ class ProductController extends AppBaseController
 
         }
 
-         if($request->name ==""){
+        if($request->product_id ==""){
             Flash::error('Nama produk masih kosong');
-            return redirect(route('product.create'));
+            return redirect(route('product.index'));
          }else{
-           $input['name'] = $request->name; 
-           $input['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->name))); 
+           $input['product_id'] = $request->product_id;
+           $product = DB::table('stock_orders')->where('id',$request->product_id)->first();
+           $input['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $product->name))); 
          } 
 
           if($request->brand_id == "")
          {
             Flash::error('Brand produk belum dipilih');
-            return redirect(route('product.create'));
+            return redirect(route('product.index'));
          }else{
             $input['brand_id'] = $request->brand_id;
          } 
@@ -277,18 +309,18 @@ class ProductController extends AppBaseController
          if($request->price == "")
          {
             Flash::error('Harga produk masih kosong');
-            return redirect(route('product.create'));
+            return redirect(route('product.index'));
          }else{
             $input['price'] = $request->price;
          } 
 
          
-          if($request->stok == "")
+          if($request->status == "")
          {
-            Flash::error('Stok masih kosong');
-            return redirect(route('product.create'));
+            Flash::error('Status belum dipilih');
+            return redirect(route('product.index'));
          }else{
-            $input['stok'] = $request->stok;
+            $input['status'] = $request->status;
          } 
          
          $input['description'] = $request->description;

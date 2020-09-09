@@ -50,8 +50,9 @@ class SliderController extends AppBaseController
     public function create()
     {
        
-        $products = DB::table('products')->select('id','name')->get();
-        return view('sliders.create')->with(['products'=>$products]);
+        $products = DB::table('products as a')->join('stock_orders as b','a.product_id','=','b.id')->where('a.status',1)->select('a.id','b.name','a.brand_id','a.sub_brand_id')->get();
+        $slider = '';
+        return view('sliders.create')->with(['products'=>$products,'slider'=>$slider]);
     }
 
     /**
@@ -63,9 +64,20 @@ class SliderController extends AppBaseController
      */
     public function store(CreateSliderRequest $request)
     {
-        $input = $request->all();
-
+        $input = array();
+           $input['name'] = $request->name;
+           $input['product_id'] = $request->product_id;
+           $input['description'] = $request->description;
             $input['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->name)));
+
+         if($request->status == "")
+         {
+            Flash::error('Status belum dipilih');
+            return redirect(route('sliders.create'));
+         }else{
+            $input['status'] = $request->status;
+         } 
+
 
            if($request->foto=='') 
             {
@@ -85,7 +97,7 @@ class SliderController extends AppBaseController
               $fullCrop = "files/photo/".$fileName.'-crop-'.$fileFormat;
                 File::makeDirectory($request->foto, 0777, true, true);
                 $img = Image::make($request->foto)->save($fullPath, 60);
-                $imgs = Image::make($request->photo)->resize(560, 460)->save($fullCrop, 60);
+                $imgs = Image::make($request->foto)->resize(560, 460)->save($fullCrop, 60);
                 $input['foto'] = $fullPath;
                 $input['foto_crop'] = $fullCrop;            
             }
@@ -128,7 +140,7 @@ class SliderController extends AppBaseController
     public function edit($id)
     {
         $slider = $this->sliderRepository->findWithoutFail($id);
-        $products = DB::table('products')->select('id','name')->get();
+        $products = DB::table('products as a')->join('stock_orders as b','a.product_id','=','b.id')->where('a.status',1)->select('a.id','b.name','a.brand_id','a.sub_brand_id')->get();
         if (empty($slider)) {
             Flash::error('Slider not found');
 
@@ -150,7 +162,7 @@ class SliderController extends AppBaseController
      */
     public function update($id, UpdateSliderRequest $request)
     {
-         $input = $request->all();
+         $input = array();
 
         $slider = $this->sliderRepository->findWithoutFail($id);
 
@@ -160,7 +172,10 @@ class SliderController extends AppBaseController
             return redirect(route('sliders.index'));
         }
 
-         $input['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->name)));
+          $input['product_id'] = $request->product_id;
+          $input['description'] = $request->description;
+          $input['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->name)));
+
 
          if($request->foto =="")
         {

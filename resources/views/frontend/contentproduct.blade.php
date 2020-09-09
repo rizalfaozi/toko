@@ -1,9 +1,9 @@
 
 @foreach($product as $row)
-
+  <?php $name = DB::table('stock_orders')->where('id',$row->product_id)->first()->name; ?> 
 	<div class="thumb-produk">
 	<p style="text-align:center; height:40px; margin:0px auto;">
-		<strong>{{ $row->name }}</strong>
+		<strong>{{ $name }}</strong>
 	</p>
 
 	<p style="text-align:center; margin:0px auto;">
@@ -12,7 +12,7 @@
 
 		<div style="width:152px; margin:0px auto; padding:0px;">
 			<a href="{{ url('order/'.$row->id) }}" class="tombol-beli" ></a>
-			<a href="{{ url('detail/'.$row->id) }}" class="vtip" title="{{ $row->name }} - Harga Rp {!! number_format($row->price,2,',','.')  !!}">
+			<a href="{{ url('detail/'.$row->id) }}" class="vtip" title="{{ $name }} - Harga Rp {!! number_format($row->price,2,',','.')  !!}">
 				<img src="{{ asset('images/bar-detail.png') }}" border=0 style="float:right;" />
 			</a>
 		</div>

@@ -1,10 +1,15 @@
+ <?php 
+    $order = DB::table('stock_orders')->where('id',$product->product_id)->first();
+    $brand =  DB::table('brands')->where('id',$order->brand_id)->first();
+    $subbrand =  DB::table('brands')->where('id',$order->sub_brand_id)->first();
+  ?> 
 <div id="content-center">
 <div style="padding:5px; border:1px solid #ccc; margin-bottom:10px;">
-	<a href="">Beranda</a> &gt; Order &gt; {{ $product->name }}</div>
+	<a href="">Beranda</a> &gt; Order &gt; {{ $order->name }}</div>
 
 
 
-<h1>Form Pemesanan Produk {{ $product->name }}</h1>
+<h1>Form Pemesanan Produk {{ $order->name }}</h1>
 
 <div class="cleaner_h10"></div>
 
@@ -30,12 +35,39 @@
 	<td width="100">Produk</td>
 	<td>:</td>
 	<td>
-		<input  type="text" disabled="disabled" class="input-teks" size="50" value="{{ $product->name }}">
+		<input  type="text" disabled="disabled" class="input-teks" size="50" value="{{ $order->name }}">
         <input name="product_id" type="hidden" class="input-teks" id="product_id" size="50" value="{{ $product->id }}">
 
-        <input name="product_name" type="hidden" class="input-teks" id="produk_name" size="50" value="{{ $product->name }}">
+        <input name="product_name" type="hidden" class="input-teks" id="produk_name" size="50" value="{{ $order->name }}">
 	</td>
 </tr>
+
+<tr>
+	<td width="100">Kategori</td>
+	<td>:</td>
+	<td>
+		<input  type="text" disabled="disabled" class="input-teks" size="50" value="{{ $brand->name }}">
+        <input name="brandid" type="hidden" class="input-teks" id="brandid" size="50" value="{{ $brand->id }}">
+	</td>
+</tr>
+
+<tr>
+	<td width="100">Sub Kategori</td>
+	<td>:</td>
+	<td>
+		<input  type="text" disabled="disabled" class="input-teks" size="50" value="{{ $subbrand->name }}">
+        <input name="subbrand" type="hidden" class="input-teks" id="subbrand" size="50" value="{{ $subbrand->id }}">
+	</td>
+</tr>
+
+<!-- <tr>
+	<td width="100">Stok</td>
+	<td>:</td>
+	<td>
+		<input  type="text" disabled="disabled" class="input-teks" size="50" value="{{ $order->stock }}">
+        <input name="stock" type="hidden" class="input-teks" id="stock" size="50" value="{{ $order->stock }}">
+	</td>
+</tr> -->
 
 <tr>
 	<td width="100">Harga</td>

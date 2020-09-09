@@ -20,7 +20,7 @@ class ProductRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
-        'name',
+        'product_id',
         'brand_id',
         'price',
         'description',

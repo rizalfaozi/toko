@@ -33,7 +33,7 @@ class StockController extends AppBaseController
         $this->stockRepository->pushCriteria(new RequestCriteria($request));
         $stocks = $this->stockRepository->all();
 
-        $recins = DB::table('stocks_details')->where('name','Recin')->get();
+        $recins = DB::table('stocks')->where('name','Recin')->get();
         if(!empty($recins))
         {
            $recin = $recins[0]->total_size;
@@ -42,7 +42,7 @@ class StockController extends AppBaseController
            $recin = 0;
         }    
 
-        $talks = DB::table('stocks_details')->where('name','Talk')->get();
+        $talks = DB::table('stocks')->where('name','Talk')->get();
         if(!empty($talks))
         {
            $talk =  $talks[0]->total_size;
@@ -52,21 +52,21 @@ class StockController extends AppBaseController
         } 
 
 
-        $kataliss = DB::table('stocks_details')->where('name','Katalis')->get();
+        $kataliss = DB::table('stocks')->where('name','Katalis')->get();
         if(!empty($kataliss)){
             $katalis = $kataliss[0]->total_size;
         }else{
             $katalis = 0;
         }
 
-        $mets = DB::table('stocks_details')->where('name','Met')->get();
+        $mets = DB::table('stocks')->where('name','Met')->get();
         if(!empty($mets)){
             $met =  $mets[0]->total_size;
         }else{
             $met = 0;
         }    
 
-        $dempuls = DB::table('stocks_details')->where('name','Dempul')->get();
+        $dempuls = DB::table('stocks')->where('name','Dempul')->get();
         if(!empty($dempuls)){
            $dempul = $dempuls[0]->total_size;
         }else{
@@ -112,7 +112,6 @@ class StockController extends AppBaseController
         DB::table('stocks_details')->insert(['name'=>$name,'total_size'=>$total,'other'=>$other,'created_at'=> date('Y-m-d h:i:sa') ]);
 
         Flash::success('Stock saved successfully.');
-
         return redirect(route('stocks.index'));
     }
 

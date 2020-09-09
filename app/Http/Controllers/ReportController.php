@@ -37,6 +37,14 @@ class ReportController extends AppBaseController
             ->with('reports', $reports);
     }
 
+   public function showprint(Request $request)
+    {
+        
+        $reports = DB::table('reports')->get();
+
+        return view('reports.show_print')
+            ->with('reports', $reports);
+    }
 
     
 
@@ -48,26 +56,10 @@ class ReportController extends AppBaseController
     public function create()
     {
 
-        $tgl_skr = date('Ymd');
-        $reports_id = "";
-        $cek_kode = DB::table('reports')
-        ->select('order_id')
-        ->where('order_id','like',''.$tgl_skr.'%')->get();
-        if(empty($cek_kode->order_id))
-        {
-
-            $max = DB::table('reports')->max('order_id');
-            if($max ==null)
-            {
-                $invoice_code = $tgl_skr.'001';
-            }else{
-                $invoice_code = $max+1;
-            }    
-            
-        }   
+        
 
         $product = DB::table('products')->where('status',1)->get();
-        return view('reports.create')->with(['order_id'=>$invoice_code,'product'=>$product,'reports_id'=>$reports_id]);
+        return view('reports.create')->with(['product'=>$product]);
     }
 
     /**
@@ -79,13 +71,43 @@ class ReportController extends AppBaseController
      */
     public function store(CreateReportRequest $request)
     {
-        $input = $request->all();
+        //$input = $request->all();
 
-        $report = $this->reportRepository->create($input);
+        $input['product_id'] = $request->product_id;
+        $input['qty'] = $request->qty;
+        $input['price'] = $request->price;
+        $input['description'] = $request->description;
+        $input['status'] = $request->status;
 
-        Flash::success('Report saved successfully.');
+        $product = DB::table('products')->where('id',$request->product_id)->first();
+        $stok = DB::table('stock_orders')->where('id',$product->product_id)->first()->stock;
+   
+        if($request->status ==1)
+        {
+            $jml = (int) $stok - (int) 1;
+            DB::table('stock_orders')->where('id',$product->product_id)->update(['stock'=>$jml]);
+        }else if($request->status ==2){
+          $jml = (int) $stok + (int)1;
+          DB::table('products')->where('id',$product->product_id)->update(['stock'=>$jml]);
+        }
+        
+        if($stok != 0)
+         {
 
-        return redirect(route('reports.index'));
+          
+           $report = DB::table('reports')->insert(['product_id'=>$request->product_id,'qty'=>$request->qty,'price'=>$request->price,'description'=>$request->description,'status'=>$request->status]);
+        //$report = $this->reportRepository->update($request->all(), $id);
+
+           Flash::success('Report saved successfully.');
+
+           return redirect(route('reports.index'));
+
+         }else{
+
+              Flash::error('Stok produk kosong');
+            return redirect(route('reports.index'));
+         }
+
     }
 
     /**
@@ -108,6 +130,14 @@ class ReportController extends AppBaseController
         return view('reports.show')->with('report', $report);
     }
 
+
+    public function price($id)
+    {
+        $products = DB::table('products as a')->select('a.id','a.price','b.stock')->join('stock_orders as b','a.product_id','=','b.id')->where('a.id',$id)->first();
+        return json_encode($products);
+          
+    }
+
     /**
      * Show the form for editing the specified Report.
      *
@@ -119,10 +149,7 @@ class ReportController extends AppBaseController
     {
         $report = $this->reportRepository->findWithoutFail($id);
 
-        $tgl_skr = date('Ymd');
-        $reports_id = $report->id;
-          
-        $invoice_code = $report->order_id;
+ 
        
 
         $product = DB::table('products')->where('status',1)->get();
@@ -133,7 +160,7 @@ class ReportController extends AppBaseController
             return redirect(route('reports.index'));
         }
 
-        return view('reports.edit')->with(['order_id'=>$invoice_code,'report'=> $report,'product'=>$product,'reports_id'=>$reports_id]);
+        return view('reports.edit')->with(['report'=> $report,'product'=>$product]);
     }
 
     /**
@@ -155,21 +182,21 @@ class ReportController extends AppBaseController
         }
 
         $product = DB::table('products')->where('id',$report->product_id)->first();
-        $stok = $product->stok;
+        $stok = DB::table('stock_orders')->where('id',$product->product_id)->first()->stock;
    
        if($request->status ==1)
        {
             $jml = (int) $stok - (int) 1;
-            DB::table('products')->where('id',$report->product_id)->update(['stok'=>$jml]);
+            DB::table('stock_orders')->where('id',$product->product_id)->update(['stock'=>$jml]);
        }else if($request->status ==2){
           $jml = (int) $stok + (int)1;
-          DB::table('products')->where('id',$report->product_id)->update(['stok'=>$jml]);
+          DB::table('stock_orders')->where('id',$product->product_id)->update(['stock'=>$jml]);
        }
          if($stok != 0)
          {
 
           
-           $report = DB::table('reports')->update(['product_id'=>$request->product_id,'qty'=>$request->qty,'price'=>$request->price,'description'=>$request->description,'status'=>$request->status]);
+        $report = DB::table('reports')->where('id',$report->id)->update(['product_id'=>$request->product_id,'qty'=>$request->qty,'price'=>$request->price,'description'=>$request->description,'status'=>$request->status]);
         //$report = $this->reportRepository->update($request->all(), $id);
 
         Flash::success('Report updated successfully.');

@@ -28,7 +28,7 @@ class Report extends Model
 
 
     public $fillable = [
-        'order_id',
+       
         'product_id',
         'qty',
         'price',
@@ -42,7 +42,7 @@ class Report extends Model
      * @var array
      */
     protected $casts = [
-        'order_id' => 'string',
+     
         'product_id' => 'integer',
         'qty' => 'integer',
         'price' => 'integer',
@@ -56,7 +56,7 @@ class Report extends Model
      * @var array
      */
     public static $rules = [
-        'order_id' => 'required',
+       
         'product_id' => 'required',
         'qty' => 'required',
         'price' => 'required',

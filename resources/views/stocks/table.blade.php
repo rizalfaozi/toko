@@ -3,7 +3,9 @@
         <tr>
         <th>Nama Barang</th>
         <th>Jumlah</th>
+       
         <th>Ukuran</th>
+         <th>Total </th>
         <th>Tgl Pembuatan</th>
         <th>Aksi</th>
         </tr>
@@ -13,8 +15,9 @@
         <tr>
             <td>{!! $stock->name !!}</td>
             <td>{!! $stock->qty !!}</td>
+
             <td>{!! $stock->size !!} {{  $stock->other }}</td>
-             
+                <td>{!! $stock->total_size !!} {{  $stock->other }}</td>
              <td>{!! $stock->created_at !!}</td>
             <td>
                 {!! Form::open(['route' => ['stocks.destroy', $stock->id], 'method' => 'delete']) !!}

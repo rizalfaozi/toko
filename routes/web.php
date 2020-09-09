@@ -21,8 +21,7 @@ Route::get('detberita/{id}', 'FrontendController@detberita');
 Route::post('order/send', 'FrontendController@send');
 Route::get('konfirmasi', 'FrontendController@konfirmasi');
 Route::post('search', 'FrontendController@search');
-Route::get('subkategori/{id}', 'ProductController@subkategori');
-Route::get('subkategoriselect/{produkid}/{id}', 'ProductController@subkategoriselect');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -47,12 +46,20 @@ Route::get('search/reports/{thn}', 'FrontendController@report');
 
 
 Route::resource('product', 'ProductController');
-Route::get('product/publish/{id}', 'ProductController@publish');
-Route::get('product/unpublish/{id}', 'ProductController@unpublish');
+Route::get('product/status/{id}/{type}', 'ProductController@status');
 
+Route::get('product/stock/{id}', 'ProductController@stock');
+Route::get('product/brands/{id}', 'ProductController@brands');
+
+
+Route::get('product/subkategori/{id}', 'ProductController@subkategori');
+
+Route::get('subkategoriselect/{produkid}/{id}', 'ProductController@subkategoriselect');
 
 Route::resource('reports', 'ReportController');
+Route::get('reports/price/{id}', 'ReportController@price');
 
+Route::get('showprint', 'ReportController@showprint');
 
 Route::resource('testimonis', 'TestimoniController');
 
@@ -60,4 +67,5 @@ Route::resource('stocks', 'StockController');
 
 Route::resource('mixes', 'MixController');
 Route::get('mixes/product/{id}', 'MixController@product');
+Route::get('mixes/status/{id}/{type}', 'MixController@status');
 

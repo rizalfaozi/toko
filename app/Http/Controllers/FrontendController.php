@@ -33,9 +33,11 @@ class FrontendController extends Controller
 
          $proterbaru = DB::table('products')->where('status',1)->limit('5')->orderBy('id','desc')->get(); 
           $product = DB::table('products')->where(['status'=>1])->get();  
+         
          $propuler = DB::table('reports as a')
-         ->select('b.id','b.name','b.price','b.photo')
+         ->select('b.id','c.name','b.price','b.photo')
          ->join('products as b','a.product_id','=','b.id')
+         ->join('stock_orders as c','a.product_id','=','c.id')
          ->limit('5')->groupBy('a.product_id')->get();
 
 
@@ -63,7 +65,9 @@ class FrontendController extends Controller
          $prorelated = DB::table('products')
          ->where('id','!=', $product->id)
          ->where(['status'=>1,'brand_id'=>$product->brand_id,'sub_brand_id'=>$product->sub_brand_id])->get(); 
-          $propuler = DB::table('reports as a')->select('b.id','b.name','b.price','b.photo')->join('products as b','a.product_id','=','b.id')->limit('5')->groupBy('a.product_id')->get();
+        
+
+          $propuler = DB::table('reports as a')->select('b.id','c.name','b.price','b.photo')->join('products as b','a.product_id','=','b.id')->join('stock_orders as c','a.product_id','=','c.id')->limit('5')->groupBy('a.product_id')->get();
          
      return view('frontend.app')->with(['kategori'=>$kategori,'slider'=>$slider,'product'=>$product,'productslide'=>$productslide,'proterbaru'=>$proterbaru,'category'=>$category,'subcategory'=>$subcategory,'prorelated'=>$prorelated,'propuler'=>$propuler]); 
 
@@ -81,7 +85,7 @@ class FrontendController extends Controller
         $productslide = DB::table('products')->where('status',1)->limit('8')->inRandomOrder()->get(); 
         $proterbaru = DB::table('products')->where('status',1)->limit('5')->orderBy('id','desc')->get(); 
 
-        $propuler = DB::table('reports as a')->select('b.id','b.name','b.price','b.photo')->join('products as b','a.product_id','=','b.id')->limit('5')->groupBy('a.product_id')->get(); 
+        $propuler = DB::table('reports as a')->select('b.id','c.name','b.price','b.photo')->join('products as b','a.product_id','=','b.id')->join('stock_orders as c','a.product_id','=','c.id')->limit('5')->groupBy('a.product_id')->get(); 
          
          return view('frontend.app')->with(['kategori'=>$kategori,'slider'=>$slider,'productslide'=>$productslide,'proterbaru'=>$proterbaru,'product'=>$product,'propuler'=>$propuler]);
         } 
@@ -123,7 +127,7 @@ class FrontendController extends Controller
         $kategori = DB::table('brands')->where('setting','utama')->get(); 
         $productslide = DB::table('products')->where('status',1)->limit('8')->inRandomOrder()->get(); 
         $proterbaru = DB::table('products')->where('status',1)->limit('5')->orderBy('id','desc')->get();  
-        $propuler = DB::table('reports as a')->select('b.id','b.name','b.price','b.photo')->join('products as b','a.product_id','=','b.id')->limit('5')->groupBy('a.product_id')->get(); 
+        $propuler = DB::table('reports as a')->select('b.id','c.name','b.price','b.photo','b.product_id')->join('products as b','a.product_id','=','b.id')->join('stock_orders as c','b.product_id','=','c.id')->limit('5')->groupBy('a.product_id')->get(); 
          
          return view('frontend.app')->with(['kategori'=>$kategori,'slider'=>$slider,'productslide'=>$productslide,'proterbaru'=>$proterbaru,'propuler'=>$propuler]);
 

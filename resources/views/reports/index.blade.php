@@ -4,9 +4,17 @@
  
     <section class="content-header">
         <h1 class="pull-left">Laporan</h1>
-        <!-- <h1 class="pull-right">
+
+         
+        
+        <h1 class="pull-right">
            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('reports.create') !!}">Tambah</a>
-        </h1> -->
+
+           <a class="btn btn-default pull-right" style="margin-top: -10px;margin-bottom: 5px;margin-right:10px;" href="{{ url('showprint') }}">Print</a>
+        </h1>
+             
+        
+
     </section>
 
  

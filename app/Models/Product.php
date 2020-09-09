@@ -29,17 +29,17 @@ class Product extends Model
 
 
     public $fillable = [
-        'name',
+        'product_id',
         'slug',
         'brand_id',
         'sub_brand_id',
         'price',
         'description',
         'noted',
-        'stok',
         'theme',
         'color',
-        'photo'
+        'photo',
+        'status'
     ];
 
     /**
@@ -48,17 +48,18 @@ class Product extends Model
      * @var array
      */
     protected $casts = [
-        'name' => 'string',
+        'product_id' => 'integer',
         'slug' =>'string',
         'brand_id' => 'integer',
         'sub_brand_id'=> 'integer',
         'price' => 'string',
         'noted' => 'string',
-        'stok'=>'integer',
+       
         'description' => 'string',
         'theme' => 'string',
         'color' => 'string',
-        'photo' => 'string'
+        'photo' => 'string',
+        'status'=>'integer'
     ];
 
     /**
@@ -67,12 +68,12 @@ class Product extends Model
      * @var array
      */
     public static $rules = [
-        'name' => 'required',
+        'product_id' => 'required',
         'brand_id' => 'required',
         'sub_brand_id' => 'required',
         'price' => 'required',
         'theme' => 'required',
-        'stok' => 'required',
+        'status'=> 'required',
         'color' => 'required'
     ];
 

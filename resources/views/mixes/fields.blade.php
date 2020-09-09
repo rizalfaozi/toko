@@ -112,7 +112,7 @@ if(action !="edit")
          for(i=0; i<jml; i++)
          {
             
-            selected  += '<option value="'+ respons[i]['id'] +'">'+ respons[i]['name'] +'</option';
+            selected  += '<option value="'+ respons[i]['id'] +'">'+ respons[i]['name'] +'</option>';
          }   
 
          $('#sub_brand_id').html(selected);

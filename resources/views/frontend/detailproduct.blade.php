@@ -6,9 +6,9 @@
 </div>
 
 <!-- <iframe src="http://www.facebook.com/plugins/like.php?href=http://arkadiaapps.loc/produk/detail/sdl100003-sandal-anak-gaul-kuning&amp;layout=standard&amp;show_faces=false&amp;width=500&amp;action=recommend&amp;colorscheme=light&amp;height=40" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:500px; height:40px; color:#FFFFFF;" allowtransparency="true"></iframe> -->
+  <?php $name = DB::table('stock_orders')->where('id',$product->product_id)->first()->name; ?> 
 
-
-<h1>{{ $product->name }}</h1>
+<h1>{{ $name }}</h1>
 
 <!-- <div class="share">Bagikan Produk ini ke : 
 	<script language="javascript">
@@ -47,7 +47,7 @@ document.write("<a href='http://twitter.com/home/?status=" + document.URL + "' t
 <tr>
 
 <td>
-	<a href="{{ url($product->photo) }}" rel="example_group" title="{{ $product->name }} - Harga  Rp {!!  number_format($product->price,2,',','.');  !!}"><div class="tombol-perbesar">Perbesar Gambar Produk</div></a>
+	<a href="{{ url($product->photo) }}" rel="example_group" title="{{ $name }} - Harga  Rp {!!  number_format($product->price,2,',','.');  !!}"><div class="tombol-perbesar">Perbesar Gambar Produk</div></a>
 </td>
 
 <td colspan="3">NB : @if($product->noted =="") - @else {{ $product->noted }} @endif</td></tr>

@@ -1,60 +1,84 @@
+
+@if(Request::segment(3) != "edit")
+
 <!-- Name Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('name', 'Nama Produk:') !!}
-    {!! Form::text('name', null, ['class' => 'form-control']) !!}
-</div>
+    <select class="form-control" id="product_id" name="product_id">
+        <option value="0">Pilih Produk</option>
 
-
-@if(Request::segment(3) == "edit")
-
-<!-- Brand Id Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('brand_id', 'Brand:') !!}
-    <select class="form-control" id="brand_id" name="brand_id">
-        <option value="0">Pilih Brand</option>
-
-         @foreach($brands as $row)
-           @if(isset($product) ? $product->brand_id == $row->id : true)
-            <option value="{{ $row->id }}" selected>{{ $row->name }}</option>
-           @else
-             <option value="{{ $row->id }}">{{ $row->name }}</option>
-
-           @endif
+         @foreach($stock_order as $row)
+           <?php $brand_id = DB::table('brands')->where(['id'=>$row->brand_id])->first()->name;?>
+           <?php $sub_brand_id = DB::table('brands')->where(['id'=>$row->sub_brand_id])->first()->name;?>
+             <option value="{{ $row->id }}">{{ $row->name }} - {{ $brand_id }} - {{ $sub_brand_id }}</option>
          @endforeach
        
     
     </select>
 </div>
 
-@else
-
 <div class="form-group col-sm-6">
-    {!! Form::label('brand_id', 'Brand:') !!}
-    <select class="form-control" id="brand_id" name="brand_id">
-        <option value="0">Pilih Brand</option>
+  
+  {!! Form::label('brand_id', 'Brand:') !!}
+   <input id="brand_id" type="hidden" name="brand_id" >
+   <input id="brand_name" class="form-control" name="brand_name" disabled>
 
-         @foreach($brands as $row)
-         
-             <option value="{{ $row->id }}">{{ $row->name }}</option>
-
-          
-         @endforeach
-       
-    
-    </select>
 </div>
-
-@endif
 
 <!-- Brand Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('sub_brand_id', 'Sub Brand:') !!}
-    <select id="sub_brand_id" class="form-control" name="sub_brand_id">
-        
+     <input id="sub_brand_id" type="hidden" name="sub_brand_id">
+    <input id="sub_brand_name" class="form-control" name="sub_brand_name" disabled>
+</div>
 
+
+
+@else
+
+<!-- Name Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('name', 'Nama Produk:') !!}
+    <select class="form-control" id="product_id" name="product_id">
+        <option value="0">Pilih Produk</option>
+
+         @foreach($stock_order as $row)
+          <?php $brand_id = DB::table('brands')->where(['id'=>$row->brand_id])->first()->name;?>
+           <?php $sub_brand_id = DB::table('brands')->where(['id'=>$row->sub_brand_id])->first()->name;?>
+             
+
+            @if(isset($product) ? $product->product_id == $row->id : true)
+            <option value="{{ $row->id }}" selected>{{ $row->name }} - {{ $brand_id }} - {{ $sub_brand_id }}</option>
+           @else
+             <option value="{{ $row->id }}">{{ $row->name }} - {{ $brand_id }} - {{ $sub_brand_id }}</option>
+
+           @endif
+           
+         @endforeach
+       
     
     </select>
 </div>
+
+
+<!-- Brand Id Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('brand_id', 'Brand:') !!}
+    <input id="brand_id" type="hidden" name="brand_id">
+    <input class="form-control" id="brand_name" name="brand_name" disabled>
+</div>
+
+<!-- Brand Id Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('sub_brand_id', 'Sub Brand:') !!}
+     <input id="sub_brand_id" type="hidden" name="sub_brand_id">
+    <input id="sub_brand_name" class="form-control" name="sub_brand_name" disabled>
+</div>
+
+
+
+@endif
+
 
 
 <!-- Price Field -->
@@ -66,7 +90,7 @@
 <!-- Motif Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('stok', 'Stok:') !!}
-    {!! Form::number('stok', null, ['class' => 'form-control']) !!}
+    <input type="text" class="form-control" name="stock_id" id="stock_id" disabled="disabled">
 </div>
 
 <!-- Description Field -->
@@ -145,9 +169,14 @@ $(document).ready(function(){
     
     if(action =="edit")
     {
-  
-       let brand_id = $('#brand_id').val(); 
-       getsubselected(id,brand_id); 
+       let product_id = $('#product_id').val();   
+       getbrand(product_id,action);
+      //console.log(product_id);
+       
+       //getsubselected(id,brand_id); 
+       // let sub_brand_id = $('#sub_brand_id').val();
+       // console.log(sub_brand_id);
+        //getstok(sub_brand_id,action);
     }
 
         // let selected =""; 
@@ -155,113 +184,109 @@ $(document).ready(function(){
         // $('#sub_brand_id').attr('disabled','disabled').html(selected);  
        
     
-
+     $('#product_id').on('change', function() {
+        getbrand(this.value,action);
+         //console.log(this.value);
+      });
    
 
-   $('#brand_id').on('change', function() {
-     getsub(this.value,action);
-    });
+    // $('#brand_id').on('change', function() {
+    //  getsub(this.value,action);
+    // });
+
+    // $('#sub_brand_id').on('change', function() {
+    //     getstok(this.value,action);
+    // });
 
  }); 
 
- function getsub(brand_id,action){
+function getstok(stock_id,action){
+
+if(action !="edit")
+{
+    var url = "../product/stock/"+stock_id;
+}else{
+    var url = "../stock/"+stock_id;
+}
+
+    $.ajax({
+      type:"GET",  
+        url:url,
+       
+        dataType: "json",
+        cache: false,
+        success: function(respons){
+        
+         $('#stock_id').val(respons);
+              
+       },
+        error: function (respons) {
+          alert("Gagal load data");
+            
+          }
+    });
+}
+
+
+function getbrand(brand_id,action){
+
+if(action !="edit")
+{
+   var url = "../product/brands/"+brand_id;
+}else{
+  var url = "../brands/"+brand_id;
+}
+
+  $.ajax({
+      type:"GET",  
+        url: url,
+       
+        dataType: "json",
+        cache: false,
+        success: function(respons){
+            $('#brand_id').val(respons['id']);
+            $('#brand_name').val(respons['name']);  
+            getsub(brand_id,action);    
+       },
+        error: function (respons) {
+          alert("Gagal load data");
+            
+          }
+      });
+
+
+}
+
+
+
+
+
+function getsub(brand_id,action){
     
 if(action !="edit")
 {
-
-     $.ajax({
-      type:"GET",  
-        url:"../subkategori/"+brand_id,
-       
-        dataType: "json",
-        cache: false,
-        success: function(respons){
-         let selected ="";   
-         let jml = respons.length;
-            $('#sub_brand_id').prop("disabled", false);
-          selected  += '<option value="0">Pilih Sub Brand</option>';
-          for(let a = 0; a < jml; a++)
-          {
-      
-            
-            selected  += '<option value="'+ respons[a]['id'] +'">'+ respons[a]['name'] +'</option>';
-         }   
-
-         $('#sub_brand_id').html(selected);
-              
-       },
-        error: function (respons) {
-          alert("Gagal load data");
-            
-          }
-      });
+   var url = "../product/subkategori/"+brand_id; 
 }else{
+   var url = "../subkategori/"+brand_id; 
+}  
 
-     $.ajax({
+  $.ajax({
       type:"GET",  
-        url:"../../subkategori/"+brand_id,
-       
+        url:url,
         dataType: "json",
         cache: false,
         success: function(respons){
-         let selected ="";   
-         let jml = respons.length;
-            $('#sub_brand_id').prop("disabled", false);
-          selected  += '<option value="0">Pilih Sub Brand</option>';
-         for(i=0; i<jml; i++)
-         {
-            
-            selected  += '<option value="'+ respons[i]['id'] +'">'+ respons[i]['name'] +'</option>';
-         }   
-
-         $('#sub_brand_id').html(selected);
-              
+         
+            $('#sub_brand_id').val(respons['id']);
+            $('#sub_brand_name').val(respons['name']);
+             getstok(respons['id'],action);  
        },
         error: function (respons) {
           alert("Gagal load data");
             
           }
       });
-
-
- }  
 }
 
 
-function getsubselected(produkid,brand_id){
-
-   $.ajax({
-      type:"GET",  
-        url:"../../subkategoriselect/"+ produkid +"/"+brand_id,
-       
-        dataType: "json",
-        cache: false,
-        success: function(respons){
-         let selected ="";   
-         let jml = respons['data'].length;
-            $('#sub_brand_id').prop("disabled", false);
-          selected  += '<option value="0">Pilih Sub Brand</option>';
-         for(i=0; i<jml; i++)
-         {
-
-           if(respons['produk'] == respons['data'][i]['id'])
-           {
-
-             selected  += '<option value="'+ respons['data'][i]['id'] +'" selected="selected">'+ respons['data'][i]['name'] +'</option>';
-           }else{
-             selected  += '<option value="'+ respons['data'][i]['id'] +'" >'+ respons['data'][i]['name'] +'</option>';
-           }
-            
-         }   
-
-         $('#sub_brand_id').html(selected);
-              
-       },
-        error: function (respons) {
-          alert("Gagal load data");
-            
-          }
-      });
-
-}
 </script>

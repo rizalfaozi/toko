@@ -84,11 +84,13 @@ initCallback: mycarousel_initCallback
     <div id="wrap"> 
 
         <ul id="hs" class="jcarousel-skin-tango-hs"> 
-   @foreach($productslide as $slider)       
+   @foreach($productslide as $slider)  
+
+   <?php $name = DB::table('stock_orders')->where('id',$slider->product_id)->first()->name; ?>   
 <li>
-  <a href="{{ url('detail/'.$slider->id) }}" class="vtip" title="{{ $slider->name }} - Harga  Rp {!!  number_format($slider->price,2,',','.')  !!}">
-    <img src="{{ url($slider->photo) }}" alt="{{ $slider->name }}">
-    <br />{{ $slider->name }}<br>Harga Rp {!!  number_format($slider->price,2,',','.');  !!}
+  <a href="{{ url('detail/'.$slider->id) }}" class="vtip" title="{{ $name }} - Harga  Rp {!!  number_format($slider->price,2,',','.')  !!}">
+    <img src="{{ url($slider->photo) }}" alt="{{ $name }}">
+    <br />{{ $name }}<br>Harga Rp {!!  number_format($slider->price,2,',','.');  !!}
   </a>
   </li>
 
