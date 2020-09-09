@@ -97,38 +97,15 @@ $(document).ready(function(){
     
 if(action !="edit")
 {
-
-     $.ajax({
-      type:"GET",  
-        url:"../subkategori/"+brand_id,
-       
-        dataType: "json",
-        cache: false,
-        success: function(respons){
-         let selected ="";   
-         let jml = respons.length;
-            $('#sub_brand_id').prop("disabled", false);
-          selected  += '<option value="0">Pilih Sub Brand</option>';
-         for(i=0; i<jml; i++)
-         {
-            
-            selected  += '<option value="'+ respons[i]['id'] +'">'+ respons[i]['name'] +'</option>';
-         }   
-
-         $('#sub_brand_id').html(selected);
-              
-       },
-        error: function (respons) {
-          alert("Gagal load data");
-            
-          }
-      });
+  var url = "../mixes/subkategori/"+brand_id;  
 }else{
+  var url = "../subkategori/"+brand_id;  
+  
+}  
 
-     $.ajax({
+$.ajax({
       type:"GET",  
-        url:"../../subkategori/"+brand_id,
-       
+        url: url,
         dataType: "json",
         cache: false,
         success: function(respons){
@@ -151,8 +128,6 @@ if(action !="edit")
           }
       });
 
-
- }  
 }
 
 

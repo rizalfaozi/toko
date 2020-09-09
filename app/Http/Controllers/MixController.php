@@ -31,7 +31,7 @@ class MixController extends AppBaseController
     public function index(Request $request)
     {
         $this->mixRepository->pushCriteria(new RequestCriteria($request));
-        $mixes = DB::table('mixes')->groupBy('sub_brand_id')->get();
+        $mixes = DB::table('mixes')->groupBy('sub_brand_id','name')->get();
 
         $recins = DB::table('stocks')->where('name','Recin')->get();
         if(!empty($recins))
@@ -240,6 +240,14 @@ class MixController extends AppBaseController
 
         Flash::success('Berhasil dipindahkan ke produk');
        return redirect(route('mixes.index'));
+    }
+
+    public function subkategori($id){
+
+        $brands = DB::table('brands')->select('id','name')->where(['menu_id'=>$id])->get(); 
+        return json_encode($brands);
+       
+     
     }
 
     public function status($type,$id){

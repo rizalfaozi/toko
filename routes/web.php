@@ -42,7 +42,7 @@ Route::get('cari/report', 'FrontendController@searchreport');
 
 Route::get('search/reports/{thn}', 'FrontendController@report');
 
-
+Route::get('mixes/subkategori/{id}', 'MixController@subkategori');
 
 
 Route::resource('product', 'ProductController');
@@ -53,7 +53,6 @@ Route::get('product/brands/{id}', 'ProductController@brands');
 
 
 Route::get('product/subkategori/{id}', 'ProductController@subkategori');
-
 Route::get('subkategoriselect/{produkid}/{id}', 'ProductController@subkategoriselect');
 
 Route::resource('reports', 'ReportController');
