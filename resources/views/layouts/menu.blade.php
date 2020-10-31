@@ -4,6 +4,7 @@
     <a href="{!! url('home') !!}"><i class="fa fa-home"></i><span>Dashboard</span></a>
 </li>
 
+@if(Auth::user()->type =="admin")
 
 <li class="treeview">
   <a href="#">
@@ -72,3 +73,14 @@
 </li>
 
 
+@else
+
+<li class="{{ Request::is('stocks*') ? 'active' : '' }}">
+    <a href="{!! route('stocks.index') !!}"><i class="fa fa-database"></i><span>Stocks</span></a>
+</li>
+
+<li class="{{ Request::is('mixes*') ? 'active' : '' }}">
+    <a href="{!! route('mixes.index') !!}"><i class="fa fa-gift"></i><span>Mixes</span></a>
+</li>
+
+@endif
